@@ -11,7 +11,7 @@ export default function JobCard({ job }: JobCardProps) {
   return (
     <Link
       href={`/jobs/${job.slug}`}
-      className="group flex justify-between items-center p-4 rounded-md hover:bg-zinc-300 transition-colors duration-200 ease-in-out"
+      className="group flex flex-col md:flex-row gap-4 md:gap-0 justify-between md:items-center p-4 rounded-md hover:bg-zinc-300 transition-colors duration-200 ease-in-out border"
     >
       <div className="flex flex-col">
         <h1 className="text-xl font-semibold tracking-tight text-black">
@@ -19,7 +19,7 @@ export default function JobCard({ job }: JobCardProps) {
         </h1>
         <p className="text-sm text-zinc-600">{job.location}</p>
       </div>
-      <div className="flex gap-2 h-full">
+      <div className="flex gap-2 h-8 md:h-full">
         <Pill text={job.type} />
         <Pill text={job.department} />
       </div>
