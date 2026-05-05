@@ -1,6 +1,6 @@
 interface headerProps {
   title: string;
-  subTitle: string;
+  subTitle?: string;
 }
 
 export default function Header({ title, subTitle }: headerProps) {
@@ -9,7 +9,7 @@ export default function Header({ title, subTitle }: headerProps) {
       <h1 className="text-3xl font-semibold tracking-tight text-black">
         {title}
       </h1>
-      <p className="text-lg text-zinc-600">{subTitle}</p>
+      <p className="text-md text-zinc-600">{subTitle}</p>
     </div>
   );
 }
