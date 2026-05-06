@@ -24,7 +24,7 @@ export default function JobCard({ job }: JobCardProps) {
         <Pill text={job.department} />
       </div>
       <p className="text-sm text-zinc-600">
-        {formatPostedDate(job.postedDate)}
+        {`Posted ${formatPostedDate(job.postedDate)} ago`}
       </p>
     </Link>
   );

@@ -2,7 +2,7 @@ import GlobalLayout from "@/components/GlobalLayout";
 import Header from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
 import { getJobBySlug } from "@/lib/jobs";
-import { formatPostedDate } from "@/util/formatPostedDate";
+import { formatPostedDate, formatClosingDate } from "@/util/formatPostedDate";
 import { notFound } from "next/navigation";
 
 interface JobDetailPageProps {
@@ -26,7 +26,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
         </h1>
         <p className="text-md md:text-lg text-zinc-600">{job.location}</p>
         <p className="text-md md:text-lg text-zinc-600">
-          {formatPostedDate(job.postedDate)}
+          {`Posted ${formatPostedDate(job.postedDate)} ago • ${formatClosingDate(job.closingDate)}`}
         </p>
         <button className="border w-56 py-4 rounded-md bg-black text-white font-semibold mt-4 md:mt-0 md:absolute cursor-pointer right-0 bottom-1/2 transform md:translate-y-1/2">
           Apply Now
