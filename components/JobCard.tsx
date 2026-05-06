@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Job } from "@/types/job";
 import Pill from "./Pill";
-import { formatPostedDate } from "@/util/formatPostedDate";
+import { formatPostedDate } from "@/util/formatDate";
 
 interface JobCardProps {
   job: Job;

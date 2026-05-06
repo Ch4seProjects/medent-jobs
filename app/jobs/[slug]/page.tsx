@@ -3,8 +3,9 @@ import Header from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
 import Button from "@/components/Button";
 import { getJobs, getJobBySlug } from "@/lib/jobs";
-import { formatPostedDate, formatClosingDate } from "@/util/formatPostedDate";
+import { formatPostedDate, formatClosingDate } from "@/util/formatDate";
 import { notFound } from "next/navigation";
+import { mapEmploymentType } from "@/util/mapEmploymentType";
 
 interface JobDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -47,54 +48,119 @@ export async function generateMetadata({ params }: JobDetailPageProps) {
 }
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const { slug } = await params;
   const job = await getJobBySlug(slug);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: job?.title,
+    description: job?.description,
+    datePosted: job?.postedDate,
+    ...(job?.closingDate && {
+      validThrough: job?.closingDate,
+    }),
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "Medenterprises",
+      sameAs: baseUrl,
+    },
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: job?.location,
+        addressCountry: "NZ",
+      },
+    },
+    employmentType: mapEmploymentType(job?.type ?? "Full-time"),
+    ...(job?.salary && {
+      baseSalary: {
+        "@type": "MonetaryAmount",
+        currency: "NZD",
+        value: {
+          "@type": "QuantitativeValue",
+          minValue: job?.salary.min,
+          maxValue: job?.salary.max,
+          unitText: "YEAR",
+        },
+      },
+    }),
+    url: `${baseUrl}/jobs/${job?.slug}`,
+    industry: job?.department,
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Jobs",
+          item: `${baseUrl}/jobs`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: job?.title,
+          item: `${baseUrl}/jobs/${job?.slug}`,
+        },
+      ],
+    },
+  };
 
   if (!job) notFound();
 
   return (
-    <GlobalLayout>
-      <Header title="Preview" />
-      <div className="border-y flex flex-col pb-4 pt-4 md:pt-12 md:gap-1 relative">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-black">
-          {job.title}
-        </h1>
-        <p className="text-md md:text-lg text-zinc-600">{job.location}</p>
-        <p className="text-md md:text-lg text-zinc-600">
-          {`Posted ${formatPostedDate(job.postedDate)} ago • ${formatClosingDate(job.closingDate)}`}
-        </p>
-        <Button
-          text="Apply Now"
-          className="mt-4 md:mt-0 md:absolute md:right-0 md:bottom-1/2 md:translate-y-1/2"
-        />
-      </div>
-      <div className="flex gap-4 w-full justify-between md:justify-start">
-        <InfoCard label="Department" value={job.department} />
-        <InfoCard label="Employee Type" value={job.type} />
-        <InfoCard
-          label="Offer Salary"
-          value={`${job.salary.currency} ${job.salary.min.toLocaleString()} - ${job.salary.max.toLocaleString()}/year`}
-        />
-      </div>
-      <div className="description-section flex flex-col gap-2">
-        <h2 className="text-2xl font-semibold tracking-tight text-black">
-          Description
-        </h2>
-        <p className="text-md md:text-lg text-justify md:left-aligned">
-          {job.description}
-        </p>
-      </div>
-      <div className="description-section flex flex-col gap-2">
-        <h2 className="text-2xl font-semibold tracking-tight text-black">
-          Requirements
-        </h2>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+      <GlobalLayout>
+        <Header title="Preview" />
+        <div className="border-y flex flex-col pb-4 pt-4 md:pt-12 md:gap-1 relative">
+          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-black">
+            {job.title}
+          </h1>
+          <p className="text-md md:text-lg text-zinc-600">{job.location}</p>
+          <p className="text-md md:text-lg text-zinc-600">
+            {`Posted ${formatPostedDate(job.postedDate)} ago • ${formatClosingDate(job.closingDate)}`}
+          </p>
+          <Button
+            text="Apply Now"
+            className="mt-4 md:mt-0 md:absolute md:right-0 md:bottom-1/2 md:translate-y-1/2"
+          />
+        </div>
+        <div className="flex gap-4 w-full justify-between md:justify-start">
+          <InfoCard label="Department" value={job.department} />
+          <InfoCard label="Employee Type" value={job.type} />
+          <InfoCard
+            label="Offer Salary"
+            value={`${job.salary.currency} ${job.salary.min.toLocaleString()} - ${job.salary.max.toLocaleString()}/year`}
+          />
+        </div>
+        <div className="description-section flex flex-col gap-2">
+          <h2 className="text-2xl font-semibold tracking-tight text-black">
+            Description
+          </h2>
+          <p className="text-md md:text-lg text-justify md:left-aligned">
+            {job.description}
+          </p>
+        </div>
+        <div className="description-section flex flex-col gap-2">
+          <h2 className="text-2xl font-semibold tracking-tight text-black">
+            Requirements
+          </h2>
 
-        <ul className="text-md md:text-lg list-disc list-outside md:space-y-1 pl-6">
-          {job.requirements.map((requirement) => (
-            <li key={requirement}>{requirement}</li>
-          ))}
-        </ul>
-      </div>
-    </GlobalLayout>
+          <ul className="text-md md:text-lg list-disc list-outside md:space-y-1 pl-6">
+            {job.requirements.map((requirement) => (
+              <li key={requirement}>{requirement}</li>
+            ))}
+          </ul>
+        </div>
+      </GlobalLayout>
+    </>
   );
 }
