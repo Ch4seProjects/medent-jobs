@@ -1,9 +1,13 @@
+import { Metadata } from "next";
 import { getJobs } from "@/lib/jobs";
 import GlobalLayout from "@/components/GlobalLayout";
 import Header from "@/components/Header";
 import JobList from "@/components/JobList";
 import Filter from "@/components/Filter";
 
+export const metadata: Metadata = {
+  title: "Jobs",
+};
 interface JobPageProps {
   searchParams: Promise<{
     department?: string | string[];

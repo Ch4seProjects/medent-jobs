@@ -1,13 +1,38 @@
 import GlobalLayout from "@/components/GlobalLayout";
 import Header from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
+import Button from "@/components/Button";
 import { getJobBySlug } from "@/lib/jobs";
 import { formatPostedDate, formatClosingDate } from "@/util/formatPostedDate";
 import { notFound } from "next/navigation";
 
 interface JobDetailPageProps {
-  params: {
-    slug: string;
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: JobDetailPageProps) {
+  const { slug } = await params;
+  const job = await getJobBySlug(slug);
+
+  if (!job) {
+    return {
+      title: {
+        absolute: "Job not found",
+      },
+      description:
+        "This listing may have been removed or the link is incorrect.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  return {
+    title: {
+      absolute: job?.title,
+    },
+    description: job?.description,
   };
 }
 
@@ -28,9 +53,10 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
         <p className="text-md md:text-lg text-zinc-600">
           {`Posted ${formatPostedDate(job.postedDate)} ago • ${formatClosingDate(job.closingDate)}`}
         </p>
-        <button className="border w-56 py-4 rounded-md bg-black text-white font-semibold mt-4 md:mt-0 md:absolute cursor-pointer right-0 bottom-1/2 transform md:translate-y-1/2">
-          Apply Now
-        </button>
+        <Button
+          text="Apply Now"
+          className="mt-4 md:mt-0 md:absolute md:right-0 md:bottom-1/2 md:translate-y-1/2"
+        />
       </div>
       <div className="flex gap-4 w-full justify-between md:justify-start">
         <InfoCard label="Department" value={job.department} />
