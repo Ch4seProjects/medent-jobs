@@ -16,6 +16,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: JobDetailPageProps) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
   const { slug } = await params;
   const job = await getJobBySlug(slug);
 
@@ -38,6 +40,9 @@ export async function generateMetadata({ params }: JobDetailPageProps) {
       absolute: job?.title,
     },
     description: job?.description,
+    alternates: {
+      canonical: `${baseUrl}/jobs/${slug}`,
+    },
   };
 }
 
@@ -72,17 +77,17 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
         />
       </div>
       <div className="description-section flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-black">
+        <h2 className="text-2xl font-semibold tracking-tight text-black">
           Description
-        </h1>
+        </h2>
         <p className="text-md md:text-lg text-justify md:left-aligned">
           {job.description}
         </p>
       </div>
       <div className="description-section flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-black">
+        <h2 className="text-2xl font-semibold tracking-tight text-black">
           Requirements
-        </h1>
+        </h2>
 
         <ul className="text-md md:text-lg list-disc list-outside md:space-y-1 pl-6">
           {job.requirements.map((requirement) => (

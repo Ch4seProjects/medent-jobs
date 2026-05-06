@@ -67,9 +67,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_ID,
   },

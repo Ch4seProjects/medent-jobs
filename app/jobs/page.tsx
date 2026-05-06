@@ -5,9 +5,23 @@ import Header from "@/components/Header";
 import JobList from "@/components/JobList";
 import Filter from "@/components/Filter";
 
-export const metadata: Metadata = {
-  title: "Jobs",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { department?: string; type?: string };
+}): Promise<Metadata> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+  return {
+    title: "Jobs",
+    description:
+      "Browse specialist medical job opportunities across New Zealand. Find roles in paediatrics, emergency medicine, general practice, anaesthesia, psychiatry, and more.",
+    alternates: {
+      canonical: `${baseUrl}/jobs`,
+    },
+  };
+}
+
 interface JobPageProps {
   searchParams: Promise<{
     department?: string | string[];
@@ -42,8 +56,8 @@ export default async function JobPage({ searchParams }: JobPageProps) {
   return (
     <GlobalLayout>
       <Header
-        title="Job Listing Page"
-        subTitle="This is where you can see all the jobs that are available."
+        title="Job Feed"
+        subTitle="Specialist medical opportunities across New Zealand"
       />
 
       <div className="flex flex-col gap-4 md:flex-row flex-1 min-h-0 w-full">
