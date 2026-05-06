@@ -75,7 +75,7 @@ export default async function Image({
                 borderRadius: 999,
               }}
             >
-              📍 {job.location}
+              {job.location}
             </div>
           )}
           {job?.type && (

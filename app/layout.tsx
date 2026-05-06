@@ -40,21 +40,12 @@ export const metadata: Metadata = {
     title: "Medent Jobs | Medical Careers in New Zealand",
     description:
       "Browse specialist medical job opportunities across New Zealand. Find roles in paediatrics, emergency medicine, general practice, anaesthesia, psychiatry, and more.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Medent Jobs – Medical Careers in New Zealand",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Medent Jobs | Medical Careers in New Zealand",
     description:
       "Browse specialist medical job opportunities across New Zealand. Find roles in paediatrics, emergency medicine, general practice, anaesthesia, psychiatry, and more.",
-    images: ["/og-image.png"],
   },
   robots: {
     index: true,
