@@ -2,12 +2,17 @@ import GlobalLayout from "@/components/GlobalLayout";
 import Header from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
 import Button from "@/components/Button";
-import { getJobBySlug } from "@/lib/jobs";
+import { getJobs, getJobBySlug } from "@/lib/jobs";
 import { formatPostedDate, formatClosingDate } from "@/util/formatPostedDate";
 import { notFound } from "next/navigation";
 
 interface JobDetailPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({ slug: job.slug }));
 }
 
 export async function generateMetadata({ params }: JobDetailPageProps) {
