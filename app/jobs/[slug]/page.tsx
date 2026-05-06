@@ -1,11 +1,11 @@
 import GlobalLayout from "@/components/GlobalLayout";
 import Header from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
-import Button from "@/components/Button";
 import { getJobs, getJobBySlug } from "@/lib/jobs";
 import { formatPostedDate, formatClosingDate } from "@/util/formatDate";
 import { notFound } from "next/navigation";
 import { mapEmploymentType } from "@/util/mapEmploymentType";
+import ApplyButton from "@/components/ApplyButton";
 
 interface JobDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -130,10 +130,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
           <p className="text-md md:text-lg text-zinc-600">
             {`Posted ${formatPostedDate(job.postedDate)} ago • ${formatClosingDate(job.closingDate)}`}
           </p>
-          <Button
-            text="Apply Now"
-            className="mt-4 md:mt-0 md:absolute md:right-0 md:bottom-1/2 md:translate-y-1/2"
-          />
+          <ApplyButton job={job} />
         </div>
         <div className="flex gap-4 w-full justify-between md:justify-start">
           <InfoCard label="Department" value={job.department} />
