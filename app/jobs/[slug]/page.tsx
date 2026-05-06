@@ -17,7 +17,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: JobDetailPageProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://medent-jobs.vercel.app";
 
   const { slug } = await params;
   const job = await getJobBySlug(slug);
@@ -48,7 +49,8 @@ export async function generateMetadata({ params }: JobDetailPageProps) {
 }
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://medent-jobs.vercel.app";
   const { slug } = await params;
   const job = await getJobBySlug(slug);
 

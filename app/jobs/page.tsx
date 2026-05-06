@@ -10,7 +10,8 @@ export async function generateMetadata({
 }: {
   searchParams: { department?: string; type?: string };
 }): Promise<Metadata> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://medent-jobs.vercel.app";
 
   return {
     title: "Jobs",

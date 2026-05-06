@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://medent-jobs.vercel.app",
   ),
   title: {
     default: "Medent Jobs | Medical Careers in New Zealand",
@@ -92,7 +92,8 @@ export default function RootLayout({
                 "@type": "Organization",
                 name: "Medenterprises",
                 url:
-                  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+                  process.env.NEXT_PUBLIC_SITE_URL ??
+                  "https://medent-jobs.vercel.app",
                 description:
                   "Medenterprises connects specialist medical professionals with leading healthcare employers across New Zealand.",
                 areaServed: {
@@ -105,14 +106,15 @@ export default function RootLayout({
                 "@type": "WebSite",
                 name: "Medent Jobs",
                 url:
-                  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+                  process.env.NEXT_PUBLIC_SITE_URL ??
+                  "https://medent-jobs.vercel.app",
                 description:
                   "Browse specialist medical job opportunities across New Zealand.",
                 potentialAction: {
                   "@type": "SearchAction",
                   target: {
                     "@type": "EntryPoint",
-                    urlTemplate: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/?department={department}&type={type}`,
+                    urlTemplate: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://medent-jobs.vercel.app"}/?department={department}&type={type}`,
                   },
                   "query-input": "required name=department",
                 },
