@@ -11,6 +11,8 @@ interface JobDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const jobs = await getJobs();
   return jobs.map((job) => ({ slug: job.slug }));
